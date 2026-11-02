@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import { ArrowRight, AtSign, Check, Mail, Phone } from "lucide-react";
 import { useId, useState, type FormEvent } from "react";
+import { DatePicker } from "@/components/DatePicker";
 import { useI18n } from "@/lib/i18n";
 import { SITE } from "@/lib/site";
 
@@ -35,8 +36,6 @@ export function OrderPanel() {
     )}&body=${encodeURIComponent(body)}`;
     setSent(true);
   };
-
-  const today = new Date().toISOString().split("T")[0];
 
   return (
     <div className="mx-auto grid min-h-full w-full max-w-6xl content-center gap-8 px-6 pb-28 pt-10 sm:px-10 lg:grid-cols-2 lg:gap-x-20 lg:gap-y-10 lg:px-14">
@@ -124,14 +123,7 @@ export function OrderPanel() {
             <label htmlFor={id("date")} className="sr-only">
               {t.order.date}
             </label>
-            <input
-              id={id("date")}
-              name="date"
-              type="date"
-              min={today}
-              aria-label={t.order.date}
-              className="field [color-scheme:inherit]"
-            />
+            <DatePicker id={id("date")} name="date" />
           </div>
         </div>
 
