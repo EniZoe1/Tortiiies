@@ -1,0 +1,123 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ------------------------------------------------------------------ */
+/* Design tokens — space-separated RGB channels (see tailwind.config)  */
+/* ------------------------------------------------------------------ */
+:root {
+  --nav-h: 4.5rem;
+
+  /* Light: white, ink, gold */
+  --bg: 255 255 255;
+  --surface: 247 244 238;
+  --raised: 255 255 255;
+  --fg: 14 14 14;
+  --muted: 102 98 90;
+  --line: 14 14 14; /* hairlines: use with opacity, e.g. border-line/15 */
+  --gold: 197 160 89; /* #C5A059 */
+  --gold-text: 138 108 40; /* darker gold: 4.5:1+ on white */
+  --gold-soft: 212 175 55; /* #D4AF37 highlight */
+
+  /* logo gradient stops — deeper golds so the mark stays crisp on white */
+  --logo-1: 201 162 39;
+  --logo-2: 184 145 42;
+  --logo-3: 160 124 38;
+  --logo-4: 190 152 60;
+
+  color-scheme: light;
+}
+
+.dark {
+  --bg: 8 8 8;
+  --surface: 18 18 17;
+  --raised: 28 27 25;
+  --fg: 245 241 232;
+  --muted: 163 158 146;
+  --gold: 212 175 55; /* #D4AF37 */
+  --gold-text: 222 186 82;
+  --gold-soft: 232 198 112;
+  --line: 245 241 232;
+
+  /* the original brand gradient (#ffe47a → #ffd54f → #d4af37 → #e8c670) */
+  --logo-1: 255 228 122;
+  --logo-2: 255 213 79;
+  --logo-3: 212 175 55;
+  --logo-4: 232 198 112;
+
+  color-scheme: dark;
+}
+
+@media (min-width: 640px) {
+  :root {
+    --nav-h: 5rem;
+  }
+}
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+  body {
+    @apply bg-bg font-sans text-fg antialiased;
+    overflow: hidden; /* each view scrolls inside its own container */
+    overscroll-behavior: none;
+  }
+  ::selection {
+    background: rgb(var(--gold) / 0.35);
+  }
+  :focus-visible {
+    outline: 2px solid rgb(var(--gold));
+    outline-offset: 3px;
+    border-radius: 6px;
+  }
+}
+
+/* Smooth light <-> dark crossfade. The class is added for ~700ms by the
+   theme toggle only, so normal hover transitions stay snappy. */
+html.theme-transition,
+html.theme-transition *,
+html.theme-transition *::before,
+html.theme-transition *::after {
+  transition:
+    background-color 0.6s ease,
+    border-color 0.6s ease,
+    color 0.6s ease,
+    fill 0.6s ease,
+    stroke 0.6s ease,
+    box-shadow 0.6s ease !important;
+}
+
+/* ------------------------------------------------------------------ */
+/* Components                                                          */
+/* ------------------------------------------------------------------ */
+@layer components {
+  .gold-text {
+    @apply bg-clip-text text-transparent;
+    background-image: linear-gradient(
+      100deg,
+      rgb(var(--gold)) 0%,
+      rgb(var(--gold-soft)) 35%,
+      rgb(var(--gold)) 55%,
+      rgb(var(--gold-soft)) 100%
+    );
+    background-size: 200% 100%;
+  }
+
+  .eyebrow {
+    @apply font-sans text-[0.68rem] font-medium uppercase tracking-luxe text-gold-text;
+  }
+
+  .hide-scrollbar {
+    scrollbar-width: none;
+  }
+  .hide-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .field {
+    @apply w-full rounded-xl border border-line/15 bg-bg/60 px-4 py-3 text-sm text-fg
+      placeholder:text-muted/70 transition-[border-color,box-shadow] duration-300
+      focus:border-gold focus:outline-none focus:ring-4 focus:ring-gold/15;
+  }
+}
